@@ -1,0 +1,49 @@
+def openDictionary(filename):
+    words = []
+    with open(filename, "r") as file:
+        for line in file:
+            word = line.strip().lower()
+            if word != "":
+                words.append(word) 
+    return words
+
+def binarySearch(dictionary, target):
+    lo = 0
+    hi = len(dictionary) - 1
+
+    while lo <= hi:
+        mid = (lo + hi) // 2  
+        midWord = dictionary[mid]
+
+        if midWord == target:
+            return True
+        elif target < midWord:
+            hi = mid - 1 
+        else:
+            lo = mid + 1 
+            
+    return False
+
+def main():
+    dictionaryName = input("Enter the name of the dictionary file --> ")
+    textName = input("Enter a file to check spelling --> ")
+
+    dictionary = openDictionary(dictionaryName)
+    file = open(textName, "r", encoding="utf-8")
+
+    punchuation_marks = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+
+    for line in file:
+        for mark in punchuation_marks:
+            line = line.replace(mark, ' ')            
+        words = line.split()
+
+        for word in words:
+            word = word.lower()
+
+            if not binarySearch(dictionary, word):
+                print(word)
+
+    file.close()
+
+main()
